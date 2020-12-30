@@ -16,7 +16,8 @@ interface AllergyApi {
     suspend fun getItem(
         @Query("serviceKey",encoded = true) serviceKey:String="lfEeqXGixAkw5T3ayDXJAh7IxSRht3gDWrIHhL5V7fRDn8ODOz9fYd%2Bpe4cmGh6qf5U4hW%2Bh51MK%2FaL4ngwetQ%3D%3D",
         @Query("prdlstNm")prdlstNm:String="과자",
-        @Query("returnType")returnType: String="json"
+        @Query("returnType")returnType: String="json",
+        @Query("numOfRows")numOfRows:Int=20
     ): Response<SearchResponse>
 
 

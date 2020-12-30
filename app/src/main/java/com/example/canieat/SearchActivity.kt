@@ -16,12 +16,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.canieat.adapter.MainAdapter
 import com.example.canieat.model.SearchItem
 import com.example.canieat.repository.Repository
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : AppCompatActivity() {
 
     lateinit var viewModel:SearchViewModel
     lateinit var repository: Repository
+
+    lateinit var speak_to_Text:String
 
     val adapter=MainAdapter()
 //    var currentList= listOf<SearchItem>()
@@ -40,7 +43,8 @@ class SearchActivity : AppCompatActivity() {
         search_recycler_view.layoutManager=LinearLayoutManager(this)
         search_recycler_view.addItemDecoration(DividerItemDecoration(this,LinearLayoutManager.VERTICAL))
 
-
+        var intent=intent
+        speak_to_Text=intent.getStringExtra("query")!!.toString()
 
         toolbar_search_view.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -48,8 +52,10 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-
-                viewModel.getItem(newText.toString().trim())
+                if (speak_to_Text!=""){
+                    viewModel.getItem(speak_to_Text)
+                    speak_to_Text=""
+                }else viewModel.getItem(newText.toString().trim())
                 return true
             }
 
@@ -60,12 +66,20 @@ class SearchActivity : AppCompatActivity() {
 //            currentList=list
         })
 
+
+//        viewModel.getItem()
+
         adapter.setOnItemClickListener {
             val intent= Intent(this@SearchActivity,DetailActivity::class.java)
             intent.putExtra("itemInfo",it)
             startActivity(intent)
         }
     }
+
+//    override fun onResume() {
+//        super.onResume()
+////        toolbar_search_view.setQuery(speak_to_Text,true)
+//    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
